@@ -1,6 +1,7 @@
 import socket
 import random
 import time
+import sys
 from multiprocessing import Process
 
 
@@ -31,11 +32,14 @@ print('Socket created on port ' + str(serverPort))
 
 # Returns the winner
 def getPoints():
-    if player1points > player2points:
+    global player1points
+    global player2points
+    
+    if int(player1points) > int(player2points):
         return 'Player 1 wins!'
-    if player2points > player1points:
+    if int(player2points) > int(player1points):
         return 'Player 2 wins!'
-    if player2points == player1points:
+    if int(player2points) == int(player1points):
         return 'It''s a tie!'
         
 # Main function thats starts the main listener
@@ -54,8 +58,8 @@ def tryGet():
 
     if timesWinnerQueried > 1:
             connectionData.send(getPoints().encode())
-            print('The game has ended! The server will now stop.')
-            quit()
+            print('The game has ended! Please restart the server.')
+            sys.exit()
         
 # Listens for data
 def mainListener():
@@ -63,6 +67,9 @@ def mainListener():
     global timesItemsQueried
     global drawingTopic
     global connectionData
+    
+    global player1points
+    global player2points
     
     while True :
         (connection, address) = socketObject.accept()
@@ -79,26 +86,27 @@ def mainListener():
       
         if '1, ' in data.decode():
             timesWinnerQueried = timesWinnerQueried + 1
+            player2points = data.decode().replace('1, ', '')
             if timesWinnerQueried == 2:
                 connection.send(getPoints().encode())
                 connection.close()
                 listener2 = Process(target=tryGet)
                 listener2.start() 
             else:
-                player2points = data.decode().replace('1, ', '')        
+                connectionData = connection
                 connectionData = connection
                 connection.send(b'none-yet')
              
 
         if '2, ' in data.decode():
             timesWinnerQueried = timesWinnerQueried + 1
+            player1points = data.decode().replace('2, ', '')
             if timesWinnerQueried == 2:
                 connection.send(getPoints().encode())
                 connection.close()
                 listener2 = Process(target=tryGet)
                 listener2.start() 
             else:
-                player1points = data.decode().replace('2, ', '')  
                 connectionData = connection
                 connection.send(b'none-yet')
 # Starts the program

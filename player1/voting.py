@@ -1,7 +1,7 @@
 import socket, time
 
 # Set this to your vote.
-points = 3
+points = 1
 
 # Don't change these unless
 # you are connecting to a 
@@ -15,6 +15,8 @@ data = None
 
 def main():
     global data
+    global points
+    
     print('You are Player 1.')
     print('You scored Player 2' + "'" + 's drawing with ' + str(points) + ' points.')
     socketObject.connect((serverIp, serverPort))

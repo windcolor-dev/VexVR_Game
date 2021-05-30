@@ -15,6 +15,8 @@ data = None
 
 def main():
     global data
+    global points
+    
     print('You are Player 2.')
     print('You scored Player 1' + "'" + 's drawing with ' + str(points) + ' points.')
     socketObject.connect((serverIp, serverPort))
