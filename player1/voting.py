@@ -26,7 +26,6 @@ def main():
     
     data = socketObject.recv(2048)      
     if 'none-yet' in data.decode():
-        socketObject.send(b'points-yet')
         data = socketObject.recv(2048)  
             
         print(data.decode())  
