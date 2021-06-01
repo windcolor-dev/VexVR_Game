@@ -71,7 +71,7 @@ def mainListener():
     global player1points
     global player2points
     
-    while True :
+    while True:
         (connection, address) = socketObject.accept()
         data = connection.recv(2048)
        
@@ -95,8 +95,7 @@ def mainListener():
             else:
                 connectionData = connection
                 connectionData = connection
-                connection.send(b'none-yet')
-             
+                connection.send(b'none-yet')             
 
         if '2, ' in data.decode():
             timesWinnerQueried = timesWinnerQueried + 1
